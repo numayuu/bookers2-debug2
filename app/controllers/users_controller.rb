@@ -16,6 +16,16 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
   end
+  
+  def follows
+    user = User.find(params[:id])
+    @users = user.follower
+  end
+
+  def followers
+    user = User.find(params[:id])
+    @users = user.followed
+  end
 
   def update
     if @user.update(user_params)
@@ -23,16 +33,6 @@ class UsersController < ApplicationController
     else
       render "edit"
     end
-  end
-  
-  def follow(user_id)
-    relationships.create(followed_id: user_id)
-  end
-  def unfollow(user_id)
-    relationships.find_by(followed_id: user_id).destroy
-  end
-  def following?(user)
-    followings.include?(user)
   end
 
   private
